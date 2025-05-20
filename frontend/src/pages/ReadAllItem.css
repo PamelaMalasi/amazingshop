@@ -1,0 +1,29 @@
+.shop-wrapper {
+    background: #fffef5;
+    min-height: 100vh;
+    padding-top: 100px;
+  }
+  
+  .shop-card {
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .shop-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+  
+  .shop-img {
+    height: 250px;
+    object-fit: cover;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .shop-card .btn {
+    border-radius: 6px;
+  }
+  

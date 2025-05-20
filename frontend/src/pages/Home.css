@@ -1,0 +1,38 @@
+.hero {
+    background-image: url("../images/img11.png"); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    padding-top: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+  }
+  
+  .hero-overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 20px 30px;
+    border-radius: 10px;
+    max-width: 90%;
+  }
+  
+
+  @media (max-width: 1199px) {
+    .hero {
+      background-image: url("../images/img2.png");
+      background-position: top;
+      height: 90vh;
+    }
+  
+    .hero-overlay h1 {
+      font-size: 1.6rem;
+    }
+  
+    .hero-overlay p {
+      font-size: 1rem;
+    }
+  }
+  

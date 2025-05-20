@@ -1,0 +1,29 @@
+.custom-navbar {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background: transparent !important;
+    z-index: 100;
+    padding: 1rem 2rem;
+  }
+  
+  .custom-navbar .navbar-brand {
+    color: #000000 !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+  }
+  
+  .custom-navbar .nav-link {
+    color: #000000 !important;
+    margin-left: 20px;
+    font-weight: bold;
+  }
+  
+  .custom-navbar .nav-link:hover {
+    color: #feee3f !important;
+    text-decoration: underline;
+  }
+  

@@ -1,0 +1,28 @@
+.contact-wrapper {
+    min-height: 100vh;
+    background: #fffef5;
+    padding-top: 100px; 
+  }
+  
+  
+  .contact-card {
+    border-radius: 12px;
+    padding: 30px;
+    background: #ffffff;
+  }
+  
+  .contact-button {
+    background-color: #ffdf2b;
+    border: none;
+    color: #333;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 10px 0;
+    border-radius: 6px;
+    transition: background 0.3s ease;
+  }
+  
+  .contact-button:hover {
+    background-color: #ffe84d;
+  }
+  
