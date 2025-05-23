@@ -1,28 +1,28 @@
-.custom-navbar {
-    position: absolute;
+.navbar1 {
+    position: fixed; 
     width: 100%;
     top: 0;
     left: 0;
-    background: transparent !important;
     z-index: 100;
     padding: 1rem 2rem;
+   background: #44cdfb; 
   }
   
-  .custom-navbar .navbar-brand {
-    color: #000000 !important;
+  .navbar1 .navbar-brand {
+    color: #ffffff !important;
     display: flex;
     align-items: center;
     gap: 10px;
     font-weight: bold;
   }
   
-  .custom-navbar .nav-link {
-    color: #000000 !important;
+  .navbar1 .nav-link {
+    color: #ffffff !important;
     margin-left: 20px;
     font-weight: bold;
   }
   
-  .custom-navbar .nav-link:hover {
+  .navbar1 .nav-link:hover {
     color: #feee3f !important;
     text-decoration: underline;
   }

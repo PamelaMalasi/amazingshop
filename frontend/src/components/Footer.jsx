@@ -12,10 +12,10 @@ const Footer = () => {
             href="/"
             className="mb-3 me-2 mb-md-0 text-dark text-decoration-none lh-1"
           >
-            <strong>AmazingShop</strong>
+            <strong>CoolShop</strong>
           </a>
           <span className="mb-3 mb-md-0 text-dark">
-            © 2025 AmazingShop, Inc
+            © 2025 CoolShop, Inc
           </span>
         </div>
 

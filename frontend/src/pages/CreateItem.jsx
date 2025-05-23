@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Container, Form, Button, Row, Col } from "react-bootstrap";
+import { Container, Form, Button, Row, Col, Card } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 
 const CreateItem = () => {
@@ -27,12 +27,10 @@ const CreateItem = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
-    formData.append("itemName", newItem.itemName);
-    formData.append("itemDescription", newItem.itemDescription);
-    formData.append("itemPrice", newItem.itemPrice);
-    formData.append("itemImage", newItem.itemImage);
+    Object.entries(newItem).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
     try {
       await axios.post("http://localhost:5000/createItem/", formData);
@@ -43,76 +41,83 @@ const CreateItem = () => {
   };
 
   return (
-    <Container className="pt-5 mt-5" style={{ minHeight: "100vh" }}>
-      <Row className="justify-content-center">
-        <Col xs={12} md={8} lg={6}>
-          <h1 className="text-center mb-4">Create Item</h1>
-          <Form onSubmit={handleSubmit} encType="multipart/form-data">
+<div style={{ background: "#f9f9f9", minHeight: "100vh", paddingTop: "140px" }}>
+      <Container className="pb-5">
+        <Row className="justify-content-center">
+          <Col xs={12} md={10} lg={8}>
+            <Card className="shadow-sm p-4">
+              <h2 className="text-center mb-4">Create New Item</h2>
 
-            <Form.Group className="mb-3" controlId="itemTitle">
-              <Form.Label>Item Title</Form.Label>
-              <Form.Control
-                type="text"
-                name="itemName"
-                value={newItem.itemName}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+              <Form onSubmit={handleSubmit} encType="multipart/form-data">
+                <Form.Group className="mb-3" controlId="itemTitle">
+                  <Form.Label>Item Title</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="itemName"
+                    value={newItem.itemName}
+                    onChange={handleChange}
+                    placeholder="Enter item title"
+                    required
+                  />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="itemPrice">
-              <Form.Label>Item Price</Form.Label>
-              <Form.Control
-                type="number"
-                name="itemPrice"
-                value={newItem.itemPrice}
-                onChange={handleChange}
-                step="0.01"
-                required
-              />
-            </Form.Group>
+                <Form.Group className="mb-3" controlId="itemPrice">
+                  <Form.Label>Item Price ($)</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="itemPrice"
+                    value={newItem.itemPrice}
+                    onChange={handleChange}
+                    step="0.01"
+                    placeholder="Enter price"
+                    required
+                  />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="itemImage">
-              <Form.Label>Item Image</Form.Label>
-              <Form.Control
-                type="file"
-                name="itemImage"
-                accept="image/*"
-                onChange={handleImage}
-                required
-              />
-            </Form.Group>
+                <Form.Group className="mb-3" controlId="itemImage">
+                  <Form.Label>Item Image</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="itemImage"
+                    accept="image/*"
+                    onChange={handleImage}
+                    required
+                  />
+                </Form.Group>
 
-            <Form.Group className="mb-3" controlId="itemDescription">
-              <Form.Label>Item Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="itemDescription"
-                value={newItem.itemDescription}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
+                {imageShow && (
+                  <div className="text-center mb-4">
+                    <img
+                      src={imageShow}
+                      className="img-fluid rounded"
+                      alt="Preview"
+                      style={{ maxHeight: "250px", objectFit: "contain" }}
+                    />
+                  </div>
+                )}
 
-            <Button type="submit" variant="dark" className="w-100">
-              Add Item
-            </Button>
-          </Form>
+                <Form.Group className="mb-4" controlId="itemDescription">
+                  <Form.Label>Item Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    name="itemDescription"
+                    value={newItem.itemDescription}
+                    onChange={handleChange}
+                    placeholder="Enter item details"
+                    required
+                  />
+                </Form.Group>
 
-          {imageShow && (
-            <div className="mt-4 text-center">
-              <img
-                src={imageShow}
-                className="img-fluid rounded"
-                alt="Preview"
-                style={{ maxHeight: "300px", objectFit: "contain" }}
-              />
-            </div>
-          )}
-        </Col>
-      </Row>
-    </Container>
+                <Button type="submit" variant="success" className="w-100">
+                  ➕ Add Item
+                </Button>
+              </Form>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

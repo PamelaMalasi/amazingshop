@@ -3,6 +3,7 @@ const itemModel = require("../models/item");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
 const path = require("path");
+const cartModel = require("../models/cart");
 
 const app = express();
 
@@ -37,7 +38,7 @@ let upload = multer({ storage, fileFilter });
 
 //CREATE
 app.post("/createItem/", upload.single("itemImage"), async (req, res) => {
-  console.log("🧾 BACKEND RECEIVED:", req.body);
+  console.log("received in backend:", req.body);
 
   try {
     const newItem = new itemModel({
@@ -50,7 +51,7 @@ app.post("/createItem/", upload.single("itemImage"), async (req, res) => {
     await newItem.save();
     res.status(200).send(newItem);
   } catch (err) {
-    console.error("❌ Error saving item:", err);
+    console.error("Error", err);
     res.status(500).send("Not added: " + err);
   }
 });
@@ -113,4 +114,48 @@ app.delete("/deleteItem/:id/", async (req, res) => {
   }
 });
 
+
+//cart
+app.post("/cart", async (req, res) => {
+    try {
+      const newCart = new cartModel({
+        items: req.body.items
+      });
+      await newCart.save();
+      res.status(201).send(newCart);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Failed to create cart.");
+    }
+  });
+  
+
+  app.get("/cart/:id", async (req, res) => {
+    try {
+      const cart = await cartModel.findById(req.params.id).populate("items.itemId");
+      res.status(200).send(cart);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Failed to retrieve cart.");
+    }
+  });
+
+
+app.patch("/cart/:id", async (req, res) => {
+    try {
+      const updated = await cartModel.findByIdAndUpdate(
+        req.params.id,
+        { items: req.body.items },
+        { new: true }
+      );
+      res.status(200).send(updated);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Failed to update cart.");
+    }
+  });
+  
+
 module.exports = app;
+
+

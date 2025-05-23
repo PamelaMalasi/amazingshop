@@ -3,6 +3,7 @@ import axios from "axios";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import "./ReadOneItem.css";
+import NewCarousel from "./NewCarousel";
 
 const ReadOneItem = () => {
   const [item, setItem] = useState({});
@@ -36,9 +37,8 @@ const ReadOneItem = () => {
   };
 
   return (
-    <div className="read-one-wrapper">
+    <div className="read-one">
   <Container className="py-5">
-    {/* MAIN ITEM ROW */}
     <Row className="align-items-center g-5 mb-5">
       <Col md={6}>
         <div className="image-container">
@@ -67,37 +67,7 @@ const ReadOneItem = () => {
       </Col>
     </Row>
   </Container>
-
-
-  <div className="read-one-bottom">
-    <Container className="py-5">
-      <h3 className="text-center mb-5">💡 Other Cool Items</h3>
-      <Row className="g-4">
-        {allItems.map((suggested) => (
-          <Col key={suggested._id} xs={12} sm={6} md={4}>
-            <Card className="suggestion-card h-100 shadow-sm">
-              <Card.Img
-                variant="top"
-                src={`http://localhost:5000/images/${suggested.itemImage}`}
-                className="suggestion-img"
-              />
-              <Card.Body className="d-flex flex-column">
-                <Card.Title>{suggested.itemName}</Card.Title>
-                <Card.Text className="text-muted">${suggested.itemPrice}</Card.Text>
-                <Button
-                  variant="dark"
-                  href={`/readOneItem/${suggested._id}`}
-                  className="mt-auto"
-                >
-                  View
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
-  </div>
+  < NewCarousel />
 </div>
 
   );

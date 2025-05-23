@@ -1,4 +1,4 @@
-.shop-wrapper {
+.shop {
     background: #fffef5;
     min-height: 100vh;
     padding-top: 100px;
@@ -17,13 +17,29 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   }
   
-  .shop-img {
-    height: 250px;
-    object-fit: cover;
-    border-bottom: 1px solid #eee;
-  }
-  
+
   .shop-card .btn {
     border-radius: 6px;
   }
+  .top-picks3 {
+    background-color: rgb(188, 230, 251);
+    background-size: cover;         
+    background-position: center center;   
+    background-repeat: no-repeat;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   
+  .collection-text {
+    color: rgb(0, 0, 0);
+    font-size: 30px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+  }
+  
+  .carousel-card-img {
+    height: 200px;
+    object-fit: cover; 
+  }

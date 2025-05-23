@@ -1,38 +1,92 @@
-.hero {
-    background-image: url("../images/img11.png"); 
+.home {
+    display: flex;
+    height: 100vh;
+    margin-top: 60px;
+    padding-top: 80px;
+    background-image: url("../images/seasideback.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh;
-    padding-top: 80px;
+  }
+  
+  .left-div,
+  .right_div {
+    flex: 1;
+    overflow: hidden;
+  }
+  
+  .left-div {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    color: white;
+    padding: 20px;
   }
   
-  .hero-overlay {
-    background-color: rgba(0, 0, 0, 0.4);
-    padding: 20px 30px;
-    border-radius: 10px;
-    max-width: 90%;
+  .home-text h1 {
+    font-size: 100px;
+    font-weight: 900;
+    margin: 0;
+    line-height: 1.2;
   }
   
+  .yellow-text {
+    color: #FFD700;
+    text-shadow: 2px 2px 0 #000;
+  }
+  
+  .purple-text {
+    color: #8A2BE2;
+    text-shadow: 2px 2px 0 #000;
+  }
+  
+  .right_div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .carousel-item {
+    transition: transform 0.6s ease-in-out;
+  }
+  
+  .carousel-inner {
+    overflow: hidden;
+    border-radius: 0;
+    box-shadow: none;
+  }
 
+  .top-picks {
+    background-image: url("../images/toppicks1.png");
+    background-size: cover;     
+    background-position: center center; 
+    background-repeat: no-repeat;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .top-picks h2 {
+    color: white;
+    font-size: 30px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+  }
+
+  
   @media (max-width: 1199px) {
-    .hero {
-      background-image: url("../images/img2.png");
+    .home {
+      flex-direction: column;
+      background-image: url("../images/seasideback.png");
       background-position: top;
-      height: 90vh;
+      height: auto;
     }
   
-    .hero-overlay h1 {
-      font-size: 1.6rem;
-    }
-  
-    .hero-overlay p {
-      font-size: 1rem;
+    .home-text h1 {
+      font-size: 2.5rem;
     }
   }
   

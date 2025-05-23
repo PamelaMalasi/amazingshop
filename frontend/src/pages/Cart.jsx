@@ -1,65 +1,103 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext.jsx";
 import { Container, ListGroup, Image, Row, Col, Button } from "react-bootstrap";
+import axios from "axios";
+import NewCarousel from "./NewCarousel.jsx";
 
 const Cart = () => {
-  const { cart, removeFromCart } = useContext(CartContext);
+  const [purchase, setPurchase] = useState("");
+  const { cart, removeFromCart, removeAllFromCart } = useContext(CartContext);
 
   useEffect(() => {
-    console.log("🛍️ Cart context:", cart);
+    console.log("🛒 Cart context:", cart);
   }, [cart]);
 
-  const total = cart.reduce((sum, item) => sum + (item.itemPrice || 0), 0);
+  const total = cart.reduce((sum, item) => {
+    if (!item || typeof item !== "object") return sum;
+    return sum + (item.itemPrice || 0);
+  }, 0);
+
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/cart", {
+        items: cart.map((item) => ({
+          itemId: item._id,
+          quantity: 1,
+        })),
+      });
+
+      console.log("Cart saved to MongoDB:", response.data);
+      setPurchase("Purchase complete!");
+      removeAllFromCart();
+    } catch (err) {
+      console.error("Failed:", err);
+      setPurchase("Failed! Please try again.");
+    }
+  };
 
   return (
-    <Container className="pt-5 mt-5 flex-grow-1" style={{ minHeight: "100vh" }}>
-      <h1 className="mb-4">Your Cart</h1>
+    <div style={{ paddingTop: "120px", background: "#f9f9f9", minHeight: "100vh" }}>
+      <Container>
+        <h1 className="text-center mb-5">Your Cart</h1>
 
-      {Array.isArray(cart) && cart.length > 0 ? (
-        <>
-          <ListGroup className="mb-4">
-            {cart.map((item, index) => (
-              <ListGroup.Item key={index}>
-                <Row className="align-items-center">
-                  <Col xs={3} md={2}>
-                    <Image
-                      src={`http://localhost:5000/images/${item.itemImage}`}
-                      alt={item.itemName}
-                      fluid
-                      rounded
-                    />
-                  </Col>
-                  <Col xs={6} md={6}>
-                    <strong>{item.itemName}</strong>
-                    <div className="text-muted">{item.itemDescription}</div>
-                  </Col>
-                  <Col xs={3} md={2} className="text-end">
-                    ${item.itemPrice?.toFixed(2) || "0.00"}
-                  </Col>
-                  <Col xs={12} md={2} className="text-end mt-2 mt-md-0">
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      onClick={() => removeFromCart(index)}
-                    >
-                      Remove
-                    </Button>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
+        {purchase && (
+          <div className="alert alert-success text-center mb-4">{purchase}</div>
+        )}
 
-          <h4 className="mb-3">Total: ${total.toFixed(2)}</h4>
+        {Array.isArray(cart) && cart.length > 0 ? (
+          <>
+            <ListGroup className="mb-5">
+              {cart.filter(Boolean).map((item, index) => (
+                <ListGroup.Item key={index} className="py-4 px-3">
+                  <Row className="align-items-center">
+                    <Col xs={12} md={2} className="text-center mb-3 mb-md-0">
+                      <Image
+                        src={`http://localhost:5000/images/${item.itemImage}`}
+                        alt={item.itemName}
+                        fluid
+                        rounded
+                        style={{ maxHeight: "100px", objectFit: "contain" }}
+                      />
+                    </Col>
+                    <Col xs={12} md={6}>
+                      <h5 className="mb-1">{item.itemName}</h5>
+                      <p className="text-muted mb-1">{item.itemDescription}</p>
+                    </Col>
+                    <Col xs={6} md={2} className="text-end">
+                      <strong>${item.itemPrice?.toFixed(2) || "0.00"}</strong>
+                    </Col>
+                    <Col xs={6} md={2} className="text-end">
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => removeFromCart(index)}
+                      >
+                        Remove
+                      </Button>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
 
-          <Button variant="primary" onClick={() => alert(" Purchase complete!")}>
-            Buy
-          </Button>
-        </>
-      ) : (
-        <p>Your cart is empty.</p>
-      )}
-    </Container>
+            <div className="text-center mb-5">
+              <h4>Total: ${total.toFixed(2)}</h4>
+              <Button
+                variant="danger"
+                className="mt-3 px-5 py-2"
+                onClick={handleSubmit}
+              >
+                Buy
+              </Button>
+            </div>
+          </>
+        ) : (
+          <p className="text-center">Your cart is empty.</p>
+        )}
+      </Container>
+
+      <NewCarousel />
+    </div>
   );
 };
 

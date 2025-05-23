@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 import axios from "axios";
+import img1 from '../images/back14.png';
+import FaqPart from './FaqPart';
 import "./Contact.css";
 
 const Contact = () => {
+    const [message, setMessage] = useState("");
+
   const [newCont, setNewCont] = useState({
     firstName: "",
     lastName: "",
@@ -20,7 +24,7 @@ const Contact = () => {
     await axios
       .post("http://localhost:5000/createContact/", newCont)
       .then((res) => {
-        alert("Thank you! Your message has been sent!");
+        setMessage("Thank you! Your message has been sent.");
         setNewCont({
           firstName: "",
           lastName: "",
@@ -28,17 +32,43 @@ const Contact = () => {
           comment: "",
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setMessage("Something went wrong. Please try again.");
+      });
   };
-
+  
   return (
-    <div className="contact-wrapper">
+   <>
+   
+   <div className="contact">
+  <div className="contact-inner">
+    <div className="left-div1 hero-text text-center">
+      <h1 className="contact-text">Contact us</h1>
+      <h1 className="description-text">Fast responses and reliable support</h1>
+    </div>
+
+    <div className="right_div1">
+      <img src={img1} alt="Slide 1" />
+    </div>
+  </div>
+</div>
+
+     
       <Container className="py-5">
+      <FaqPart /> 
         <Row className="justify-content-center">
           <Col md={8}>
             <Card className="shadow contact-card">
               <Card.Body>
                 <h2 className="text-center mb-4">Get in Touch</h2>
+               
+                  {message && (
+                  <div className="alert alert-success text-center mb-4">
+                    {message}
+                  </div>
+                )}
+
                 <Form onSubmit={handleSubmit}>
                   <Row>
                     <Col md={6}>
@@ -95,13 +125,15 @@ const Contact = () => {
                       Send Message
                     </Button>
                   </div>
+
+
                 </Form>
               </Card.Body>
             </Card>
           </Col>
         </Row>
       </Container>
-    </div>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, Card } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 
 const UpdateItem = () => {
@@ -10,7 +10,7 @@ const UpdateItem = () => {
   const [updateItem, setUpdateItem] = useState({
     itemName: "",
     itemDescription: "",
-    itemPrice: "",      
+    itemPrice: "",
     itemImage: ""
   });
 
@@ -18,15 +18,12 @@ const UpdateItem = () => {
 
   useEffect(() => {
     const getData = async () => {
-      await axios
-        .get("http://localhost:5000/readOneItem/" + id)
-        .then((res) => {
-          console.log(res);
-          setUpdateItem(res.data);
-        })
-        .catch((err) => {
-          console.log("Not read " + err);
-        });
+      try {
+        const res = await axios.get("http://localhost:5000/readOneItem/" + id);
+        setUpdateItem(res.data);
+      } catch (err) {
+        console.error("Failed to fetch item:", err);
+      }
     };
     getData();
   }, [id]);
@@ -47,67 +44,87 @@ const UpdateItem = () => {
       formData.append(key, value);
     });
 
-    await axios
-      .patch("http://localhost:5000/updateItem/" + id, formData)
-      .then((res) => {
-        console.log(res);
-        nav("/readAllItem/");
-      })
-      .catch((err) => console.log(err));
+    try {
+      await axios.patch("http://localhost:5000/updateItem/" + id, formData);
+      nav("/readAllItem/");
+    } catch (err) {
+      console.error("Failed to update item:", err);
+    }
   };
 
   return (
-    <Container>
-      <h1>Update Item</h1>
-      <Form onSubmit={handleSubmit} encType="multipart/form-data">
-        <Form.Group className="mb-3" controlId="itemTitle">
-          <Form.Label>Item Title</Form.Label>
-          <Form.Control
-            type="text"
-            name="itemName"
-            value={updateItem.itemName}
-            onChange={handleChange}
-          />
-        </Form.Group>
+    <div style={{ paddingTop: "120px", minHeight: "100vh", backgroundColor: "#f8f9fa" }}>
+      <Container>
+        <Row className="justify-content-center">
+          <Col xs={12} md={8}>
+            <Card className="shadow-sm p-4">
+              <h2 className="text-center mb-4">Update Item</h2>
+              <Form onSubmit={handleSubmit} encType="multipart/form-data">
+                <Form.Group className="mb-3" controlId="itemTitle">
+                  <Form.Label>Item Title</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="itemName"
+                    value={updateItem.itemName}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
 
-        <Form.Group className="mb-3" controlId="itemPrice">
-          <Form.Label>Item Price</Form.Label>
-          <Form.Control
-            type="number"
-            name="itemPrice"
-            value={updateItem.itemPrice}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
+                <Form.Group className="mb-3" controlId="itemPrice">
+                  <Form.Label>Item Price</Form.Label>
+                  <Form.Control
+                    type="number"
+                    name="itemPrice"
+                    value={updateItem.itemPrice}
+                    onChange={handleChange}
+                    step="0.01"
+                    required
+                  />
+                </Form.Group>
 
-        <Form.Group className="mb-3" controlId="itemImage">
-          <Form.Label>Item Image</Form.Label>
-          <Form.Control
-            type="file"
-            name="itemImage"
-            onChange={handleImage}
-          />
-        </Form.Group>
+                <Form.Group className="mb-3" controlId="itemImage">
+                  <Form.Label>Item Image</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="itemImage"
+                    accept="image/*"
+                    onChange={handleImage}
+                  />
+                </Form.Group>
 
-        <Form.Group className="mb-3" controlId="itemDescription">
-          <Form.Label>Item Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            name="itemDescription"
-            value={updateItem.itemDescription}
-            onChange={handleChange}
-          />
-        </Form.Group>
+                <Form.Group className="mb-3" controlId="itemDescription">
+                  <Form.Label>Item Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    name="itemDescription"
+                    value={updateItem.itemDescription}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
 
-        <Button type="submit" variant="warning">
-          Update Item
-        </Button>
-      </Form>
+                <Button type="submit" variant="warning" className="w-100">
+                  Update Item
+                </Button>
+              </Form>
 
-      {imageShow && <img src={imageShow} className="img-fluid" alt="Preview" />}
-    </Container>
+              {imageShow && (
+                <div className="text-center mt-4">
+                  <img
+                    src={imageShow}
+                    className="img-fluid rounded"
+                    alt="Preview"
+                    style={{ maxHeight: "300px", objectFit: "contain" }}
+                  />
+                </div>
+              )}
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 
